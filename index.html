@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسید اور کھاتہ سسٹم</title>
+    <style>
+        @font-face {
+            font-family: 'Jameel Noori Nastaleeq';
+            src: url('https://fonts.gstatic.com/s/notonastaliqurdu/v14/la-k決aq7N4Eugf_whaDC3z-JN2drGbB-0_2rJq3_kXo_w.woff2') format('woff2'); /* Placeholder URL, ideally host font or use system */
+            /* In a real scenario without external libraries, you'd rely on system fonts */
+        }
+
+        body {
+            font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', tahoma, verdana, arial, sans-serif;
+            direction: rtl;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            font-size: 16px; /* Base font size */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border: 1px solid #ccc;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+            overflow: hidden; /* Clear floats */
+        }
+        .tab-nav button {
+            background-color: inherit;
+            float: right; /* Tabs float right in RTL */
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-family: inherit;
+            font-size: 1em; /* Relative font size */
+            border-left: 1px solid #eee; /* Separator */
+        }
+        .tab-nav button:last-child {
+            border-left: none;
+        }
+        .tab-nav button:hover {
+            background-color: #ddd;
+        }
+        .tab-nav button.active {
+            background-color: #ccc;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            padding: 10px 0;
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* General Styles */
+        h2, h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+            font-family: inherit;
+            font-size: 0.95em;
+            text-align: right; /* Default text alignment for inputs */
+        }
+        input[type="file"] {
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1em;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        button.delete-btn {
+            background-color: #d9534f;
+        }
+        button.delete-btn:hover {
+            background-color: #c9302c;
+        }
+        button.edit-btn {
+            background-color: #f0ad4e;
+        }
+        button.edit-btn:hover {
+            background-color: #ec971f;
+        }
+        button.print-btn {
+             background-color: #337ab7;
+        }
+        button.print-btn:hover {
+             background-color: #286090;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: right;
+            font-size: 0.9em;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .action-buttons button {
+            min-width: 80px; /* Ensure buttons have a minimum width */
+        }
+
+        /* Receipt Specific Styles */
+        .receipt-container {
+            border: 1px solid black;
+            padding: 15px;
+            background-color: #fff;
+            margin-bottom: 20px;
+            font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', tahoma, verdana, arial, sans-serif; /* Ensure specific font */
+            font-size: 14px; /* Smaller font size for receipt */
+            line-height: 1.6;
+        }
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid black;
+            padding-bottom: 10px;
+        }
+        .receipt-header img#receipt-logo-preview {
+            max-height: 60px;
+            max-width: 150px;
+            display: block;
+            margin: 0 auto 10px auto;
+            object-fit: contain;
+        }
+        .receipt-header .shop-name {
+            font-size: 1.8em; /* Larger font for shop name */
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .receipt-header .shop-address,
+        .receipt-header .shop-phone {
+            font-size: 0.9em;
+            margin: 2px 0;
+        }
+         .receipt-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        .receipt-info div {
+             display: flex;
+             align-items: center;
+        }
+        .receipt-info span { /* Label */
+             margin-left: 8px; /* Space between label and line/value */
+        }
+        .receipt-info input[type="text"],
+        .receipt-info input[type="date"] {
+            border: none;
+            border-bottom: 1px dotted black; /* Dotted line for input */
+            padding: 2px 5px;
+            background: transparent;
+            font-family: inherit;
+            font-size: 1em;
+            width: 150px; /* Adjust as needed */
+            text-align: right;
+        }
+         /* Specific style for receipt inputs to look like text */
+        .receipt-input-style {
+            border: none;
+            background: transparent;
+            padding: 2px 0;
+            margin: 0;
+            font-family: inherit;
+            font-size: 1em;
+            text-align: right;
+            width: auto; /* Let it size naturally or set width */
+        }
+        input.receipt-input-style {
+            border-bottom: 1px dotted #555; /* Subtle line */
+        }
+        span.receipt-text-style { /* For displaying static text like customer name */
+             border-bottom: 1px dotted #555;
+             padding: 2px 5px;
+             min-width: 150px; /* Ensure minimum width */
+             display: inline-block; /* Needed for width and padding */
+             text-align: right;
+        }
+
+
+        .receipt-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid black;
+            margin-bottom: 10px;
+            font-size: 0.95em; /* Slightly smaller font in table */
+        }
+        .receipt-table th, .receipt-table td {
+            border: 1px solid black;
+            padding: 5px 8px; /* Reduced padding */
+            text-align: right; /* Default right align */
+            vertical-align: top;
+        }
+        .receipt-table th {
+            background-color: transparent; /* No background for headers in receipt */
+            font-weight: bold;
+            font-size: 1em;
+        }
+        .receipt-table .col-qty, .receipt-table .col-rate, .receipt-table .col-amount {
+            text-align: center; /* Center align numbers */
+            width: 15%; /* Approx width */
+        }
+        .receipt-table .col-desc {
+            text-align: right;
+            width: 55%; /* Wider description column */
+        }
+         /* Specific styles for receipt table inputs */
+        .receipt-table input {
+            width: 95%;
+            border: none;
+            background: transparent;
+            text-align: inherit; /* Inherit alignment from td/th */
+            font-family: inherit;
+            font-size: 1em;
+             padding: 2px;
+        }
+
+        .receipt-footer {
+            margin-top: 20px;
+            border-top: 1px solid black;
+            padding-top: 10px;
+            font-size: 0.9em;
+        }
+        .receipt-footer .totals-section {
+             margin-bottom: 15px;
+        }
+        .receipt-footer .total-row {
+            display: flex;
+            justify-content: space-between; /* Pushes amount to the left */
+            padding: 3px 0;
+            font-weight: bold; /* Make total bold */
+        }
+         .receipt-footer .total-row span:first-child {
+             /* Label (e.g., ٹوٹل) remains on the right */
+             text-align: right;
+         }
+          .receipt-footer .total-row span:last-child {
+             /* Amount aligns left */
+             text-align: left;
+             min-width: 100px; /* Ensure space for amount */
+             padding-left: 10px; /* Space from edge */
+         }
+        .receipt-footer .signature {
+            margin-top: 30px;
+            text-align: left; /* Signature usually on the left */
+            padding-left: 20px;
+            font-size: 0.9em;
+        }
+        .receipt-footer .signature span {
+            border-top: 1px dotted black;
+            padding: 0 40px; /* Space for signature */
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+                font-size: 12pt; /* Adjust base font size for print */
+                font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', Times New Roman, serif; /* Common print fonts */
+            }
+            .container {
+                box-shadow: none;
+                border: none;
+                max-width: 100%;
+                padding: 0;
+            }
+            .tab-nav, .tab-content:not(.active), .settings-section, .inventory-form, .customer-form, .reports-filters, #data-management, .action-buttons, .non-print {
+                display: none !important; /* Hide non-receipt elements */
+            }
+             #receipt-generator, .receipt-container {
+                display: block !important; /* Ensure receipt is visible */
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                border: none; /* Remove container border for print */
+            }
+            .receipt-header img#receipt-logo-preview {
+                max-height: 50px; /* Slightly smaller logo for print */
+            }
+             /* Ensure receipt inputs look like static text when printing */
+            .receipt-info input[type="text"],
+            .receipt-info input[type="date"],
+            .receipt-table input {
+                border: none !important;
+                background: transparent !important;
+                padding: 0;
+                 margin: 0;
+                 -webkit-appearance: none; /* Remove default appearance */
+                 appearance: none;
+                box-shadow: none !important;
+                 font-size: 1em; /* Match surrounding text size */
+            }
+            span.receipt-text-style {
+                 border-bottom: none; /* Hide dotted line on print */
+                 padding: 0 5px; /* Adjust padding */
+                 min-width: auto;
+            }
+            .receipt-table th, .receipt-table td {
+                font-size: 10pt; /* Adjust table font size */
+                padding: 4px; /* Reduce padding for print */
+                border: 1px solid black; /* Ensure borders print */
+            }
+            .receipt-footer {
+                font-size: 10pt; /* Adjust footer font size */
+                 page-break-inside: avoid; /* Try to keep footer on same page */
+            }
+             .receipt-footer .total-row span:last-child {
+                min-width: 80px; /* Adjust amount width for print */
+            }
+            button.print-btn {
+                 display: none; /* Hide print button itself */
+            }
+        }
+        
+        /* Tab Navigation - Improved Visibility */
+        .tab-nav {
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+            overflow: hidden; /* Clear floats */
+            background-color: #f0f0f0; /* Light grey background for the nav bar itself */
+            border-radius: 4px 4px 0 0; /* Optional: Round top corners */
+        }
+        .tab-nav button {
+            float: right; /* Tabs float right in RTL */
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: background-color 0.3s, color 0.3s;
+            font-family: inherit;
+            font-size: 1em; /* Relative font size */
+            background-color: transparent; /* Default background */
+            color: #333; /* Darker text color for better contrast */
+            border-left: 1px solid #ddd; /* Separator */
+        }
+        .tab-nav button:last-child {
+            border-left: none;
+        }
+        .tab-nav button:hover {
+            background-color: #e0e0e0; /* Slightly darker grey on hover */
+            color: #000; /* Black text on hover */
+        }
+        .tab-nav button.active {
+            background-color: #5cb85c; /* Use a distinct color for active tab, e.g., your primary button color */
+            color: white; /* White text for active tab */
+            font-weight: bold;
+            border-bottom: 2px solid #4cae4c; /* Optional: Solid underline for active */
+        }
+        /* Ensure content area has space from the nav */
+        .tab-content {
+            display: none;
+            padding: 20px 10px; /* Added padding */
+            border: 1px solid #ccc; /* Add border around content */
+            border-top: none; /* Remove top border as nav has bottom border */
+            background-color: white; /* Ensure content background is white */
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="tab-nav">
+            <button class="tab-button" onclick="openTab(event, 'receipt-generator')">رسید بنائیں</button>
+            <button class="tab-button" onclick="openTab(event, 'khata-system')">کھاتہ سسٹم</button>
+            <button class="tab-button" onclick="openTab(event, 'inventory')">انوینٹری</button>
+            <button class="tab-button" onclick="openTab(event, 'customers')">کسٹمرز</button>
+            <button class="tab-button" onclick="openTab(event, 'reports')">رپورٹس</button>
+            <button class="tab-button" onclick="openTab(event, 'settings')">سیٹنگز</button>
+        </div>
+
+        <div id="receipt-generator" class="tab-content active">
+            <h2>رسید بنائیں</h2>
+
+            <div class="receipt-form-section non-print">
+                 <div class="form-grid">
+                    <div>
+                        <label for="receipt-customer">کسٹمر منتخب کریں:</label>
+                        <select id="receipt-customer" onchange="updateReceiptCustomerInfo()">
+                            <option value="">-- نیا / نقد کسٹمر --</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label for="receipt-date-input">تاریخ:</label>
+                        <input type="date" id="receipt-date-input">
+                    </div>
+                </div>
+
+                <h3>ائٹمز شامل کریں</h3>
+                <div class="form-grid">
+                    <div>
+                        <label for="receipt-item-select">ائٹم (انوینٹری سے):</label>
+                        <select id="receipt-item-select" onchange="fillItemDetails()">
+                            <option value="">-- ائٹم منتخب کریں --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="receipt-item-desc">تفصیل:</label>
+                        <input type="text" id="receipt-item-desc" placeholder="ائٹم کی تفصیل">
+                    </div>
+                     <div>
+                        <label for="receipt-item-qty">تعداد:</label>
+                        <input type="number" id="receipt-item-qty" value="1" min="0.1" step="any">
+                    </div>
+                    <div>
+                        <label for="receipt-item-rate">نرخ (فی ائٹم):</label>
+                        <input type="number" id="receipt-item-rate" min="0" step="any">
+                    </div>
+                </div>
+                <button onclick="addReceiptItem()">ائٹم شامل کریں</button>
+                <hr>
+            </div>
+
+            <h3>رسید پریویو</h3>
+             <button onclick="printReceipt()" class="print-btn non-print">رسید پرنٹ کریں</button>
+            <div class="receipt-container" id="receipt-preview">
+                <div class="receipt-header">
+                     <img id="receipt-logo-preview" src="" alt="Shop Logo" style="display: none;">
+                    <div class="shop-name" id="receipt-shop-name">دکان کا نام</div>
+                    <div class="shop-address" id="receipt-shop-address">دکان کا پتہ</div>
+                    <div class="shop-phone" id="receipt-shop-phone">فون نمبر</div>
+                </div>
+                <div class="receipt-info">
+                     <div><span>بل بنام:</span> <span id="receipt-customer-name-display" class="receipt-text-style">کسٹمر کا نام</span></div>
+                    <div><span>تاریخ:</span> <input type="date" id="receipt-date-display" class="receipt-input-style" readonly></div>
+                     </div>
+                <table class="receipt-table" id="receipt-items-table">
+                    <thead>
+                        <tr>
+                            <th class="col-qty">تعداد</th>
+                            <th class="col-desc">تفصیل</th>
+                            <th class="col-rate">نرخ</th>
+                            <th class="col-amount">رقم (روپے)</th>
+                            <th class="non-print">عمل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+                 <div class="receipt-footer">
+                     <div class="totals-section">
+                         <div class="total-row">
+                             <span>میزان:</span>
+                             <span id="receipt-subtotal">0.00</span>
+                         </div>
+                          <div class="total-row">
+                             <span>ٹوٹل رقم:</span>
+                             <span id="receipt-grand-total">0.00</span>
+                         </div>
+                         <div class="total-row non-print">
+                              <label for="receipt-payment-type" style="margin-left: 10px;">ادائیگی:</label>
+                              <select id="receipt-payment-type" onchange="togglePaymentAmount()">
+                                 <option value="none">کوئی نہیں (ادھار)</option>
+                                 <option value="partial">جزوی ادائیگی</option>
+                                 <option value="full">مکمل ادائیگی</option>
+                              </select>
+                              <input type="number" id="receipt-amount-paid" min="0" step="any" style="width: 100px; display: none;" placeholder="ادا شدہ رقم">
+                         </div>
+                         <div class="total-row" id="receipt-amount-due-row" style="display: none;">
+                             <span>بقایا رقم:</span>
+                             <span id="receipt-amount-due">0.00</span>
+                         </div>
+                         <div class="total-row" id="receipt-prev-balance-row" style="display: none;">
+                            <span>پچھلا بقایا:</span>
+                            <span id="receipt-prev-balance">0.00</span>
+                         </div>
+                         <div class="total-row" id="receipt-new-balance-row" style="display: none; font-size: 1.1em; color: red;">
+                            <span>نیا کل بقایا:</span>
+                            <span id="receipt-new-balance">0.00</span>
+                         </div>
+                     </div>
+                     <button onclick="saveReceipt()" class="non-print">رسید محفوظ کریں</button>
+                     <div class="signature">
+                         <span>دستخط</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="khata-system" class="tab-content">
+            <h2>کسٹمر کھاتہ</h2>
+            <div class="non-print">
+                 <label for="khata-customer-select">کسٹمر منتخب کریں:</label>
+                 <select id="khata-customer-select" onchange="loadCustomerKhata()">
+                     <option value="">-- کسٹمر منتخب کریں --</option>
+                 </select>
+            </div>
+
+             <div id="khata-details" style="margin-top: 20px;">
+                 <h3 id="khata-customer-name">کسٹمر کا نام</h3>
+                 <p><strong>موجودہ بقایا: <span id="khata-current-balance" style="color: red;">0.00</span></strong></p>
+
+                 <div class="non-print" id="khata-payment-section" style="margin-bottom: 20px; border: 1px solid #eee; padding: 10px; display: none;">
+                     <h4>بقایا ادا کریں</h4>
+                     <label for="khata-payment-amount">ادا کی جانے والی رقم:</label>
+                     <input type="number" id="khata-payment-amount" min="0.01" step="any">
+                     <button onclick="recordKhataPayment()">ادائیگی ریکارڈ کریں</button>
+                 </div>
+
+                 <h4>ٹرانزیکشنز</h4>
+                 <table id="khata-transactions-table">
+                     <thead>
+                         <tr>
+                             <th>تاریخ</th>
+                             <th>تفصیل</th>
+                             <th>ڈیبٹ (بقایا میں اضافہ)</th>
+                             <th>کریڈٹ (ادائیگی/کمی)</th>
+                             <th>بیلنس</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         </tbody>
+                 </table>
+             </div>
+             <div id="khata-no-customer" style="text-align: center; margin-top: 30px; color: grey;">
+                 براہ کرم کھاتہ دیکھنے کے لیے اوپر سے کسٹمر منتخب کریں۔
+             </div>
+        </div>
+
+        <div id="inventory" class="tab-content">
+            <h2>انوینٹری مینجمنٹ</h2>
+            <div class="inventory-form non-print">
+                <h3>نیا ائٹم شامل کریں / ترمیم کریں</h3>
+                <input type="hidden" id="inventory-item-id"> <div class="form-grid">
+                    <div>
+                        <label for="item-name">ائٹم کا نام:</label>
+                        <input type="text" id="item-name" required>
+                    </div>
+                    <div>
+                        <label for="item-desc">تفصیل:</label>
+                        <input type="text" id="item-desc">
+                    </div>
+                    <div>
+                        <label for="item-rate">نرخ (فی ائٹم):</label>
+                        <input type="number" id="item-rate" required min="0" step="any">
+                    </div>
+                </div>
+                <button onclick="addOrUpdateInventoryItem()">محفوظ کریں</button>
+                <button onclick="clearInventoryForm()" type="button" class="non-print">فارم صاف کریں</button>
+            </div>
+
+            <h3>موجودہ انوینٹری</h3>
+            <table id="inventory-table">
+                <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>تفصیل</th>
+                        <th>نرخ</th>
+                        <th class="non-print">عمل</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="customers" class="tab-content">
+            <h2>کسٹمر مینجمنٹ</h2>
+             <div class="customer-form non-print">
+                <h3>نیا کسٹمر شامل کریں / ترمیم کریں</h3>
+                <input type="hidden" id="customer-id"> <div class="form-grid">
+                     <div>
+                        <label for="customer-name">کسٹمر کا نام (Urdu/English):</label>
+                        <input type="text" id="customer-name" required>
+                    </div>
+                     <div>
+                        <label for="customer-phone">فون نمبر (اختیاری):</label>
+                        <input type="tel" id="customer-phone">
+                    </div>
+                     <div>
+                         <label for="customer-address">پتہ (اختیاری):</label>
+                         <input type="text" id="customer-address">
+                     </div>
+                 </div>
+                <button onclick="addOrUpdateCustomer()">محفوظ کریں</button>
+                 <button onclick="clearCustomerForm()" type="button" class="non-print">فارم صاف کریں</button>
+            </div>
+
+            <h3>موجودہ کسٹمرز</h3>
+            <table id="customers-table">
+                <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>فون</th>
+                        <th>پتہ</th>
+                        <th>موجودہ بقایا</th>
+                        <th class="non-print">عمل</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="reports" class="tab-content">
+            <h2>رپورٹس</h2>
+             <div class="reports-filters non-print">
+                 <h3>فلٹر کریں</h3>
+                 <div class="form-grid">
+                     <div>
+                         <label for="report-customer-filter">کسٹمر کے لحاظ سے:</label>
+                         <select id="report-customer-filter">
+                             <option value="">-- تمام کسٹمرز --</option>
+                         </select>
+                     </div>
+                     <div>
+                         <label for="report-start-date">شروعاتی تاریخ:</label>
+                         <input type="date" id="report-start-date">
+                     </div>
+                     <div>
+                         <label for="report-end-date">اختتامی تاریخ:</label>
+                         <input type="date" id="report-end-date">
+                     </div>
+                 </div>
+                 <button onclick="generateReport()">رپورٹ بنائیں</button>
+            </div>
+
+             <div id="report-results" style="margin-top: 20px;">
+                 <h3>رپورٹ کے نتائج</h3>
+                 <div id="report-summary" style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                     <p><strong>کل فروخت:</strong> <span id="report-total-sales">0.00</span></p>
+                     <p><strong>کل وصولی:</strong> <span id="report-total-received">0.00</span></p>
+                     <p><strong>کل بقایاجات:</strong> <span id="report-total-dues">0.00</span></p>
+                 </div>
+                 <h4>تفصیلی رپورٹ / کھاتہ جات</h4>
+                 <div id="report-details-table-container">
+                     <p style="text-align: center; color: grey;">رپورٹ بنانے کے لیے اوپر فلٹر منتخب کریں۔</p>
+                 </div>
+             </div>
+        </div>
+
+        <div id="settings" class="tab-content">
+            <h2>سیٹنگز</h2>
+             <div class="settings-section">
+                <h3>دکان کی معلومات</h3>
+                 <div class="form-grid">
+                     <div>
+                        <label for="shop-name">دکان کا نام:</label>
+                        <input type="text" id="shop-name" oninput="updateReceiptPreviewHeader()">
+                     </div>
+                     <div>
+                         <label for="shop-address">پتہ:</label>
+                         <input type="text" id="shop-address" oninput="updateReceiptPreviewHeader()">
+                     </div>
+                     <div>
+                         <label for="shop-phone">فون نمبر:</label>
+                         <input type="tel" id="shop-phone" oninput="updateReceiptPreviewHeader()">
+                     </div>
+                     <div>
+                         <label for="shop-logo">لوگو اپلوڈ کریں:</label>
+                         <input type="file" id="shop-logo" accept="image/*" onchange="previewLogo(event)">
+                          <button onclick="removeLogo()" class="delete-btn">لوگو ہٹائیں</button>
+                         <img id="logo-preview-settings" src="" alt="Logo Preview" style="max-width: 150px; max-height: 80px; margin-top: 10px; display: none;">
+                     </div>
+                 </div>
+                <button onclick="saveShopInfo()">معلومات محفوظ کریں</button>
+            </div>
+
+            <div id="data-management" class="settings-section non-print" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                <h3>ڈیٹا مینجمنٹ</h3>
+                <button onclick="exportData()">ڈیٹا ایکسپورٹ کریں (بیک اپ)</button>
+                <br><br>
+                <label for="import-file">ڈیٹا امپورٹ کریں (JSON فائل):</label>
+                <input type="file" id="import-file" accept=".json">
+                <button onclick="importData()">ڈیٹا امپورٹ کریں</button>
+                <p style="color: red; font-size: 0.9em;">احتیاط: امپورٹ کرنے سے موجودہ تمام ڈیٹا مٹ جائے گا!</p>
+            </div>
+        </div>
+
+    </div><script>
+        // --- IndexedDB Setup ---
+        const DB_NAME = 'khataAppDB';
+        const DB_VERSION = 1;
+        const STORES = {
+            shopInfo: 'shopInfo', // Store for shop details (name, address, phone, logo) - use key 'details'
+            inventory: 'inventory', // Store for items (id, name, desc, rate)
+            customers: 'customers', // Store for customers (id, name, phone, address, balance)
+            receipts: 'receipts', // Store for saved receipts (id, customerId, date, items, total, paid, due)
+            transactions: 'transactions' // Store for khata entries (id, customerId, date, type[receipt/payment], amount, balanceAfter, relatedId[receiptId])
+        };
+        let db;
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onerror = (event) => {
+                    console.error("Database error:", event.target.errorCode);
+                    reject("Database error: " + event.target.errorCode);
+                };
+
+                request.onsuccess = (event) => {
+                    db = event.target.result;
+                    console.log("Database opened successfully");
+                    resolve(db);
+                };
+
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    console.log("Upgrading database...");
+
+                    if (!db.objectStoreNames.contains(STORES.shopInfo)) {
+                        db.createObjectStore(STORES.shopInfo); // Simple key-value for single entry
+                    }
+                    if (!db.objectStoreNames.contains(STORES.inventory)) {
+                        const inventoryStore = db.createObjectStore(STORES.inventory, { keyPath: 'id', autoIncrement: true });
+                        inventoryStore.createIndex('name', 'name', { unique: false });
+                    }
+                    if (!db.objectStoreNames.contains(STORES.customers)) {
+                        const customerStore = db.createObjectStore(STORES.customers, { keyPath: 'id', autoIncrement: true });
+                        customerStore.createIndex('name', 'name', { unique: false });
+                        customerStore.createIndex('balance', 'balance', { unique: false });
+                    }
+                    if (!db.objectStoreNames.contains(STORES.receipts)) {
+                        const receiptStore = db.createObjectStore(STORES.receipts, { keyPath: 'id', autoIncrement: true });
+                        receiptStore.createIndex('customerId', 'customerId', { unique: false });
+                        receiptStore.createIndex('date', 'date', { unique: false });
+                    }
+                     if (!db.objectStoreNames.contains(STORES.transactions)) {
+                        const transactionStore = db.createObjectStore(STORES.transactions, { keyPath: 'id', autoIncrement: true });
+                        transactionStore.createIndex('customerId', 'customerId', { unique: false });
+                        transactionStore.createIndex('date', 'date', { unique: false });
+                        transactionStore.createIndex('type', 'type', { unique: false });
+                    }
+                    console.log("Database upgrade complete");
+                };
+            });
+        }
+
+        // --- Generic DB Operations ---
+        function addToStore(storeName, data) {
+            return new Promise((resolve, reject) => {
+                if (!db) return reject("Database not open");
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.add(data);
+                request.onsuccess = (event) => resolve(event.target.result); // Returns the new key/id
+                request.onerror = (event) => reject("Error adding to store: " + event.target.error);
+            });
+        }
+
+        function putToStore(storeName, data, key) { // Use put for add/update
+             return new Promise((resolve, reject) => {
+                if (!db) return reject("Database not open");
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                // For shopInfo, key is provided, otherwise rely on keyPath or autoIncrement
+                const request = key ? store.put(data, key) : store.put(data);
+                request.onsuccess = (event) => resolve(event.target.result);
+                request.onerror = (event) => reject("Error putting to store: " + event.target.error);
+            });
+        }
+
+
+        function getFromStore(storeName, key) {
+             return new Promise((resolve, reject) => {
+                 if (!db) return reject("Database not open");
+                 const transaction = db.transaction([storeName], 'readonly');
+                 const store = transaction.objectStore(storeName);
+                 const request = store.get(key);
+                 request.onsuccess = (event) => resolve(event.target.result);
+                 request.onerror = (event) => reject("Error getting from store: " + event.target.error);
+             });
+         }
+
+        function getAllFromStore(storeName, indexName = null, query = null) {
+            return new Promise((resolve, reject) => {
+                if (!db) return reject("Database not open");
+                const transaction = db.transaction([storeName], 'readonly');
+                const store = transaction.objectStore(storeName);
+                let request;
+
+                if (indexName && query !== null) {
+                    const index = store.index(indexName);
+                    request = index.getAll(query);
+                } else {
+                    request = store.getAll();
+                }
+
+                request.onsuccess = (event) => resolve(event.target.result);
+                request.onerror = (event) => reject("Error getting all from store: " + event.target.error);
+            });
+        }
+
+         function deleteFromStore(storeName, key) {
+            return new Promise((resolve, reject) => {
+                if (!db) return reject("Database not open");
+                const transaction = db.transaction([storeName], 'readwrite');
+                const store = transaction.objectStore(storeName);
+                const request = store.delete(key);
+                request.onsuccess = () => resolve();
+                request.onerror = (event) => reject("Error deleting from store: " + event.target.error);
+            });
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await openDB();
+                loadInitialData();
+                 // Set default date for receipt
+                 document.getElementById('receipt-date-input').valueAsDate = new Date();
+                 document.getElementById('receipt-date-display').valueAsDate = new Date();
+
+                 // Set default active tab
+                 document.querySelector('.tab-button').click(); // Click the first tab button
+            } catch (error) {
+                console.error("Initialization failed:", error);
+                alert("ڈیٹا بیس کھولنے میں ناکامی ہوئی!");
+            }
+        });
+
+        async function loadInitialData() {
+            await loadShopInfo();
+            await loadInventory();
+            await loadCustomers();
+            updateReceiptPreviewHeader(); // Update receipt header after loading shop info
+        }
+
+        // --- Tab Management ---
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+
+             // Refresh data for specific tabs when opened
+             if (tabName === 'khata-system' || tabName === 'reports') {
+                loadCustomers(); // Ensure customer dropdowns are fresh
+            }
+             if (tabName === 'receipt-generator') {
+                loadCustomers();
+                loadInventory(); // Ensure item dropdown is fresh
+                updateReceiptPreviewHeader(); // Refresh header preview
+            }
+        }
+
+        // --- Settings ---
+        const SHOP_INFO_KEY = 'details'; // Single key for shop info object
+
+        async function saveShopInfo() {
+            const name = document.getElementById('shop-name').value;
+            const address = document.getElementById('shop-address').value;
+            const phone = document.getElementById('shop-phone').value;
+            const logoPreview = document.getElementById('logo-preview-settings');
+            const logoData = logoPreview.src.startsWith('data:image') ? logoPreview.src : null; // Only save if it's a data URL
+
+            const shopData = { name, address, phone, logoData };
+
+            try {
+                await putToStore(STORES.shopInfo, shopData, SHOP_INFO_KEY);
+                alert('دکان کی معلومات کامیابی سے محفوظ ہو گئیں۔');
+                updateReceiptPreviewHeader(); // Update preview immediately
+            } catch (error) {
+                console.error("Error saving shop info:", error);
+                alert('معلومات محفوظ کرنے میں خرابی۔');
+            }
+        }
+
+        async function loadShopInfo() {
+             try {
+                const shopData = await getFromStore(STORES.shopInfo, SHOP_INFO_KEY);
+                if (shopData) {
+                    document.getElementById('shop-name').value = shopData.name || '';
+                    document.getElementById('shop-address').value = shopData.address || '';
+                    document.getElementById('shop-phone').value = shopData.phone || '';
+                    const logoPreviewSettings = document.getElementById('logo-preview-settings');
+                    const logoPreviewReceipt = document.getElementById('receipt-logo-preview');
+                    if (shopData.logoData) {
+                        logoPreviewSettings.src = shopData.logoData;
+                        logoPreviewSettings.style.display = 'block';
+                        logoPreviewReceipt.src = shopData.logoData;
+                        logoPreviewReceipt.style.display = 'block';
+                    } else {
+                         logoPreviewSettings.style.display = 'none';
+                         logoPreviewSettings.src = '';
+                         logoPreviewReceipt.style.display = 'none';
+                         logoPreviewReceipt.src = '';
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading shop info:", error);
+                // Don't alert, just means no info saved yet
+            }
+        }
+
+        function previewLogo(event) {
+            const reader = new FileReader();
+            const file = event.target.files[0];
+             const logoPreviewSettings = document.getElementById('logo-preview-settings');
+             const logoPreviewReceipt = document.getElementById('receipt-logo-preview');
+
+            if (file) {
+                 if (file.size > 500 * 1024) { // Limit logo size (e.g., 500KB)
+                    alert("لوگو فائل کا سائز 500KB سے کم ہونا چاہیے۔");
+                    event.target.value = ''; // Clear the file input
+                    return;
+                }
+                reader.onload = function(e) {
+                    logoPreviewSettings.src = e.target.result;
+                    logoPreviewSettings.style.display = 'block';
+                     logoPreviewReceipt.src = e.target.result; // Update receipt preview too
+                     logoPreviewReceipt.style.display = 'block';
+                     updateReceiptPreviewHeader(); // Trigger header update indirectly if needed
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeLogo() {
+            document.getElementById('shop-logo').value = ''; // Clear file input
+            document.getElementById('logo-preview-settings').src = '';
+            document.getElementById('logo-preview-settings').style.display = 'none';
+             document.getElementById('receipt-logo-preview').src = '';
+            document.getElementById('receipt-logo-preview').style.display = 'none';
+            // Consider saving immediately or prompting user to save changes
+            saveShopInfo(); // Save removal immediately
+        }
+
+
+        function updateReceiptPreviewHeader() {
+             // Use values directly from settings inputs for live preview
+            document.getElementById('receipt-shop-name').textContent = document.getElementById('shop-name').value || 'دکان کا نام';
+            document.getElementById('receipt-shop-address').textContent = document.getElementById('shop-address').value || 'دکان کا پتہ';
+            document.getElementById('receipt-shop-phone').textContent = document.getElementById('shop-phone').value || 'فون نمبر';
+             // Logo is updated via previewLogo and loadShopInfo
+        }
+
+        // --- Inventory Management ---
+         async function addOrUpdateInventoryItem() {
+            const id = document.getElementById('inventory-item-id').value;
+            const name = document.getElementById('item-name').value.trim();
+            const desc = document.getElementById('item-desc').value.trim();
+            const rate = parseFloat(document.getElementById('item-rate').value);
+
+            if (!name || isNaN(rate) || rate < 0) {
+                alert('براہ کرم ائٹم کا نام اور درست مثبت نرخ درج کریں۔');
+                return;
+            }
+
+            const item = { name, desc, rate };
+            try {
+                if (id) { // Update existing item
+                    item.id = parseInt(id);
+                    await putToStore(STORES.inventory, item);
+                    alert('ائٹم کامیابی سے اپ ڈیٹ ہو گیا۔');
+                } else { // Add new item
+                    await addToStore(STORES.inventory, item);
+                    alert('نیا ائٹم کامیابی سے شامل ہو گیا۔');
+                }
+                clearInventoryForm();
+                loadInventory(); // Refresh the list
+            } catch (error) {
+                console.error("Error saving inventory item:", error);
+                alert('ائٹم محفوظ کرنے میں خرابی۔');
+            }
+        }
+
+        function clearInventoryForm() {
+             document.getElementById('inventory-item-id').value = '';
+             document.getElementById('item-name').value = '';
+             document.getElementById('item-desc').value = '';
+             document.getElementById('item-rate').value = '';
+        }
+
+        async function loadInventory() {
+            try {
+                const items = await getAllFromStore(STORES.inventory);
+                const tableBody = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
+                 const itemSelect = document.getElementById('receipt-item-select');
+                 const currentSelectedItemId = itemSelect.value; // Preserve selection if possible
+
+                tableBody.innerHTML = ''; // Clear existing table rows
+                itemSelect.innerHTML = '<option value="">-- ائٹم منتخب کریں --</option>'; // Clear and add default option
+
+                items.sort((a, b) => a.name.localeCompare(b.name, 'ur')); // Sort by name
+
+                items.forEach(item => {
+                    // Populate inventory table
+                    const row = tableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>${item.desc || '-'}</td>
+                        <td>${item.rate.toFixed(2)}</td>
+                        <td class="action-buttons non-print">
+                            <button class="edit-btn" onclick="editInventoryItem(${item.id})">ترمیم</button>
+                            <button class="delete-btn" onclick="deleteInventoryItem(${item.id})">حذف کریں</button>
+                        </td>
+                    `;
+
+                     // Populate receipt item dropdown
+                     const option = document.createElement('option');
+                     option.value = item.id;
+                     option.textContent = `${item.name} (${item.rate.toFixed(2)})`;
+                     option.dataset.rate = item.rate; // Store rate in data attribute
+                     option.dataset.desc = item.desc || item.name; // Use description or name
+                     itemSelect.appendChild(option);
+                });
+
+                // Restore selection if the item still exists
+                 if (currentSelectedItemId) {
+                     itemSelect.value = currentSelectedItemId;
+                 }
+
+            } catch (error) {
+                console.error("Error loading inventory:", error);
+                alert('انوینٹری لوڈ کرنے میں خرابی۔');
+            }
+        }
+
+        async function editInventoryItem(id) {
+            try {
+                const item = await getFromStore(STORES.inventory, id);
+                if (item) {
+                    document.getElementById('inventory-item-id').value = item.id;
+                    document.getElementById('item-name').value = item.name;
+                    document.getElementById('item-desc').value = item.desc;
+                    document.getElementById('item-rate').value = item.rate;
+                    // Optionally scroll to form or highlight it
+                     document.getElementById('item-name').focus();
+                }
+            } catch (error) {
+                 console.error("Error fetching item for edit:", error);
+                 alert('ترمیم کے لیے ائٹم لوڈ کرنے میں خرابی۔');
+            }
+        }
+
+        async function deleteInventoryItem(id) {
+             if (confirm('کیا آپ واقعی اس ائٹم کو حذف کرنا چاہتے ہیں؟')) {
+                try {
+                    await deleteFromStore(STORES.inventory, id);
+                    alert('ائٹم کامیابی سے حذف ہو گیا۔');
+                    loadInventory(); // Refresh the list
+                } catch (error) {
+                    console.error("Error deleting inventory item:", error);
+                    alert('ائٹم حذف کرنے میں خرابی۔');
+                }
+            }
+        }
+
+
+        // --- Customer Management ---
+        async function addOrUpdateCustomer() {
+            const id = document.getElementById('customer-id').value;
+            const name = document.getElementById('customer-name').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
+            const address = document.getElementById('customer-address').value.trim();
+
+            if (!name) {
+                alert('براہ کرم کسٹمر کا نام درج کریں۔');
+                return;
+            }
+
+             // If adding a new customer, initialize balance to 0
+             // If updating, we need to fetch the existing customer to preserve the balance
+            let customerData = { name, phone, address };
+
+            try {
+                 if (id) { // Update existing customer
+                    const existingCustomer = await getFromStore(STORES.customers, parseInt(id));
+                    if (!existingCustomer) throw new Error("Customer not found for update");
+                    customerData.id = parseInt(id);
+                    customerData.balance = existingCustomer.balance; // Preserve existing balance
+                    await putToStore(STORES.customers, customerData);
+                    alert('کسٹمر کامیابی سے اپ ڈیٹ ہو گیا۔');
+                } else { // Add new customer
+                     customerData.balance = 0; // New customers start with zero balance
+                    await addToStore(STORES.customers, customerData);
+                    alert('نیا کسٹمر کامیابی سے شامل ہو گیا۔');
+                }
+                clearCustomerForm();
+                loadCustomers(); // Refresh lists and dropdowns
+            } catch (error) {
+                 console.error("Error saving customer:", error);
+                 alert('کسٹمر محفوظ کرنے میں خرابی: ' + error.message);
+            }
+        }
+
+        function clearCustomerForm() {
+            document.getElementById('customer-id').value = '';
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-phone').value = '';
+            document.getElementById('customer-address').value = '';
+        }
+
+         async function loadCustomers() {
+            try {
+                const customers = await getAllFromStore(STORES.customers);
+                const tableBody = document.getElementById('customers-table').getElementsByTagName('tbody')[0];
+                 // Get references to all customer select dropdowns
+                const selects = [
+                    document.getElementById('receipt-customer'),
+                    document.getElementById('khata-customer-select'),
+                    document.getElementById('report-customer-filter')
+                ];
+                // Preserve current selections
+                 const currentSelections = selects.map(sel => sel.value);
+
+                tableBody.innerHTML = ''; // Clear table
+                 // Clear and add default options to dropdowns
+                 selects.forEach(sel => {
+                    sel.innerHTML = ''; // Clear existing options
+                    if (sel.id === 'receipt-customer') {
+                        sel.innerHTML = '<option value="">-- نیا / نقد کسٹمر --</option>';
+                    } else if (sel.id === 'report-customer-filter') {
+                         sel.innerHTML = '<option value="">-- تمام کسٹمرز --</option>';
+                    }
+                     else {
+                        sel.innerHTML = '<option value="">-- کسٹمر منتخب کریں --</option>';
+                    }
+                });
+
+                customers.sort((a, b) => a.name.localeCompare(b.name, 'ur')); // Sort by name
+
+                customers.forEach(customer => {
+                    // Populate customer table
+                    const row = tableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${customer.name}</td>
+                        <td>${customer.phone || '-'}</td>
+                        <td>${customer.address || '-'}</td>
+                        <td>${(customer.balance || 0).toFixed(2)}</td>
+                        <td class="action-buttons non-print">
+                            <button class="edit-btn" onclick="editCustomer(${customer.id})">ترمیم</button>
+                             <button class="delete-btn" onclick="deleteCustomer(${customer.id})">حذف کریں</button>
+                             <button onclick="viewCustomerKhata(${customer.id})">کھاتہ دیکھیں</button>
+                        </td>
+                    `;
+
+                    // Populate customer dropdowns
+                    selects.forEach(sel => {
+                         const option = document.createElement('option');
+                         option.value = customer.id;
+                         option.textContent = customer.name + (customer.phone ? ` (${customer.phone})` : '');
+                         option.dataset.balance = customer.balance || 0; // Store balance
+                         sel.appendChild(option);
+                     });
+                });
+
+                // Restore selections
+                 selects.forEach((sel, index) => {
+                     if (currentSelections[index]) {
+                         sel.value = currentSelections[index];
+                     }
+                 });
+
+            } catch (error) {
+                console.error("Error loading customers:", error);
+                alert('کسٹمرز لوڈ کرنے میں خرابی۔');
+            }
+        }
+
+        async function editCustomer(id) {
+            try {
+                const customer = await getFromStore(STORES.customers, id);
+                if (customer) {
+                    document.getElementById('customer-id').value = customer.id;
+                    document.getElementById('customer-name').value = customer.name;
+                    document.getElementById('customer-phone').value = customer.phone || '';
+                    document.getElementById('customer-address').value = customer.address || '';
+                    // Optionally switch to the customer tab and focus
+                     openTab({currentTarget: document.querySelector('button[onclick*="customers"]')}, 'customers');
+                     document.getElementById('customer-name').focus();
+                }
+            } catch (error) {
+                 console.error("Error fetching customer for edit:", error);
+                 alert('ترمیم کے لیے کسٹمر لوڈ کرنے میں خرابی۔');
+            }
+        }
+
+        async function deleteCustomer(id) {
+             // Check if customer has outstanding balance or transactions
+             try {
+                 const customer = await getFromStore(STORES.customers, id);
+                 const transactions = await getAllFromStore(STORES.transactions, 'customerId', id);
+
+                 if (customer && customer.balance !== 0) {
+                     alert(`کسٹمر کو حذف نہیں کیا جا سکتا کیونکہ ان کا بقایا ${customer.balance.toFixed(2)} ہے۔ پہلے کھاتہ صاف کریں۔`);
+                     return;
+                 }
+                 if (transactions && transactions.length > 0) {
+                      if (!confirm('اس کسٹمر کے ٹرانزیکشنز موجود ہیں۔ کیا آپ واقعی کسٹمر اور ان کی تمام ٹرانزیکشنز کو حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں کیا جا سکتا۔')) {
+                         return;
+                     }
+                      // If confirmed, delete transactions first (implement transaction deletion if needed, or just delete customer)
+                      // For simplicity here, we'll just warn. A full implementation might delete related transactions.
+                      console.warn("Deleting customer with existing transactions. Transactions might become orphaned if not handled.");
+                 } else if (!confirm('کیا آپ واقعی اس کسٹمر کو حذف کرنا چاہتے ہیں؟')) {
+                     return; // User cancelled standard confirmation
+                 }
+
+                // Proceed with deletion
+                await deleteFromStore(STORES.customers, id);
+                 // Optionally delete associated transactions and receipts (more complex)
+                alert('کسٹمر کامیابی سے حذف ہو گیا۔');
+                loadCustomers(); // Refresh lists
+                // Also potentially clear khata view if this customer was selected
+                const khataSelect = document.getElementById('khata-customer-select');
+                 if (khataSelect.value == id) { // Use == for type coercion string vs number
+                     khataSelect.value = "";
+                     loadCustomerKhata(); // Clear the khata display
+                 }
+            } catch (error) {
+                 console.error("Error deleting customer:", error);
+                 alert('کسٹمر حذف کرنے میں خرابی۔');
+            }
+        }
+
+         function viewCustomerKhata(customerId) {
+             // Switch to khata tab and select the customer
+             const khataSelect = document.getElementById('khata-customer-select');
+             khataSelect.value = customerId;
+             openTab({currentTarget: document.querySelector('button[onclick*="khata-system"]')}, 'khata-system');
+             loadCustomerKhata(); // Load the data
+         }
+
+        // --- Receipt Generation ---
+        let currentReceiptItems = []; // Array to hold items for the current receipt
+
+        function fillItemDetails() {
+             const select = document.getElementById('receipt-item-select');
+             const selectedOption = select.options[select.selectedIndex];
+             if (selectedOption && selectedOption.value) {
+                 document.getElementById('receipt-item-desc').value = selectedOption.dataset.desc || '';
+                 document.getElementById('receipt-item-rate').value = selectedOption.dataset.rate || '';
+                 document.getElementById('receipt-item-qty').value = 1; // Reset quantity
+                 document.getElementById('receipt-item-qty').focus(); // Focus quantity for quick entry
+             } else {
+                  // Clear fields if no item is selected or "-- Select --" is chosen
+                 document.getElementById('receipt-item-desc').value = '';
+                 document.getElementById('receipt-item-rate').value = '';
+                 document.getElementById('receipt-item-qty').value = 1;
+             }
+        }
+
+        function addReceiptItem() {
+             const desc = document.getElementById('receipt-item-desc').value.trim();
+             const qty = parseFloat(document.getElementById('receipt-item-qty').value);
+             const rate = parseFloat(document.getElementById('receipt-item-rate').value);
+
+             if (!desc || isNaN(qty) || qty <= 0 || isNaN(rate) || rate < 0) {
+                 alert('براہ کرم درست تفصیل، تعداد، اور مثبت نرخ درج کریں۔');
+                 return;
+             }
+
+             const amount = qty * rate;
+             const item = {
+                 id: Date.now(), // Temporary unique ID for this session's item list
+                 desc: desc,
+                 qty: qty,
+                 rate: rate,
+                 amount: amount
+             };
+             currentReceiptItems.push(item);
+             renderReceiptItems();
+             clearReceiptItemForm();
+        }
+
+         function renderReceiptItems() {
+             const tableBody = document.getElementById('receipt-items-table').getElementsByTagName('tbody')[0];
+             tableBody.innerHTML = ''; // Clear previous items
+             let subtotal = 0;
+
+             currentReceiptItems.forEach((item, index) => {
+                 const row = tableBody.insertRow();
+                 row.innerHTML = `
+                     <td class="col-qty">${item.qty}</td>
+                     <td class="col-desc">${item.desc}</td>
+                     <td class="col-rate">${item.rate.toFixed(2)}</td>
+                     <td class="col-amount">${item.amount.toFixed(2)}</td>
+                     <td class="action-buttons non-print">
+                         <button class="delete-btn" onclick="removeReceiptItem(${item.id})">X</button>
+                     </td>
+                 `;
+                 subtotal += item.amount;
+             });
+
+             // Add empty rows if needed for visual spacing (like the image) - optional
+            //  const minRows = 5;
+            //  const currentRows = currentReceiptItems.length;
+            //  for (let i = 0; i < minRows - currentRows; i++) {
+            //      const emptyRow = tableBody.insertRow();
+            //      emptyRow.innerHTML = `<td>&nbsp;</td><td></td><td></td><td></td><td class="non-print"></td>`;
+            //      emptyRow.style.height = '2em'; // Give empty rows some height
+            //  }
+
+             document.getElementById('receipt-subtotal').textContent = subtotal.toFixed(2);
+             // Assuming no discount for now, grand total is same as subtotal
+             document.getElementById('receipt-grand-total').textContent = subtotal.toFixed(2);
+             updatePaymentDetails(); // Recalculate payment/due amounts
+         }
+
+        function removeReceiptItem(itemId) {
+             currentReceiptItems = currentReceiptItems.filter(item => item.id !== itemId);
+             renderReceiptItems();
+        }
+
+        function clearReceiptItemForm() {
+            document.getElementById('receipt-item-select').value = '';
+            document.getElementById('receipt-item-desc').value = '';
+            document.getElementById('receipt-item-qty').value = 1;
+            document.getElementById('receipt-item-rate').value = '';
+        }
+
+        function updateReceiptCustomerInfo() {
+            const select = document.getElementById('receipt-customer');
+            const selectedOption = select.options[select.selectedIndex];
+            const customerNameDisplay = document.getElementById('receipt-customer-name-display');
+            const prevBalanceRow = document.getElementById('receipt-prev-balance-row');
+             const prevBalanceSpan = document.getElementById('receipt-prev-balance');
+             const newBalanceRow = document.getElementById('receipt-new-balance-row');
+
+            if (selectedOption && selectedOption.value) {
+                 // Selected a specific customer
+                 customerNameDisplay.textContent = selectedOption.textContent.split('(')[0].trim(); // Get name part
+                 const balance = parseFloat(selectedOption.dataset.balance || 0);
+                 prevBalanceSpan.textContent = balance.toFixed(2);
+                 prevBalanceRow.style.display = 'flex'; // Show previous balance row
+                 newBalanceRow.style.display = 'flex'; // Show new total balance row
+                 updatePaymentDetails(); // Recalculate based on new customer context
+            } else {
+                // Cash / New Customer
+                customerNameDisplay.textContent = 'نقد کسٹمر'; // Default text
+                prevBalanceSpan.textContent = '0.00';
+                 prevBalanceRow.style.display = 'none'; // Hide previous balance
+                 newBalanceRow.style.display = 'none'; // Hide new total balance row
+                 // Reset payment type to full or none for cash sales? Optional.
+                 // document.getElementById('receipt-payment-type').value = 'full';
+                 updatePaymentDetails();
+            }
+        }
+
+
+         function togglePaymentAmount() {
+             const paymentType = document.getElementById('receipt-payment-type').value;
+             const amountPaidInput = document.getElementById('receipt-amount-paid');
+             const amountDueRow = document.getElementById('receipt-amount-due-row');
+             const grandTotal = parseFloat(document.getElementById('receipt-grand-total').textContent) || 0;
+
+             if (paymentType === 'partial') {
+                 amountPaidInput.style.display = 'inline-block';
+                 amountPaidInput.value = ''; // Clear previous value
+                 amountPaidInput.max = grandTotal > 0 ? grandTotal : ''; // Set max based on total
+                 amountDueRow.style.display = 'flex';
+                 amountPaidInput.focus();
+             } else if (paymentType === 'full') {
+                 amountPaidInput.style.display = 'none';
+                 amountPaidInput.value = grandTotal; // Set paid amount to total
+                 amountDueRow.style.display = 'none';
+             } else { // 'none' (credit)
+                 amountPaidInput.style.display = 'none';
+                 amountPaidInput.value = 0;
+                 amountDueRow.style.display = 'flex';
+             }
+             updatePaymentDetails(); // Update due amount display
+         }
+
+         function updatePaymentDetails() {
+             const paymentType = document.getElementById('receipt-payment-type').value;
+             const grandTotal = parseFloat(document.getElementById('receipt-grand-total').textContent) || 0;
+             const amountPaidInput = document.getElementById('receipt-amount-paid');
+             let amountPaid = 0;
+
+             if (paymentType === 'full') {
+                 amountPaid = grandTotal;
+             } else if (paymentType === 'partial') {
+                  amountPaid = parseFloat(amountPaidInput.value) || 0;
+                  // Ensure partial payment doesn't exceed grand total
+                  if (amountPaid > grandTotal) {
+                      amountPaid = grandTotal;
+                      amountPaidInput.value = grandTotal; // Correct the input
+                  }
+             } else { // 'none'
+                 amountPaid = 0;
+             }
+
+             const amountDue = grandTotal - amountPaid;
+             document.getElementById('receipt-amount-due').textContent = amountDue.toFixed(2);
+
+             // Update total balance for selected customer
+             const customerSelect = document.getElementById('receipt-customer');
+             const newBalanceRow = document.getElementById('receipt-new-balance-row');
+             if (customerSelect.value && newBalanceRow.style.display !== 'none') { // If a customer is selected and row is visible
+                const prevBalance = parseFloat(document.getElementById('receipt-prev-balance').textContent) || 0;
+                const newTotalBalance = prevBalance + amountDue; // Add the *due* amount of this receipt to previous balance
+                document.getElementById('receipt-new-balance').textContent = newTotalBalance.toFixed(2);
+             }
+         }
+
+         // Add event listener for amount paid input to update due amount dynamically
+          document.getElementById('receipt-amount-paid').addEventListener('input', updatePaymentDetails);
+          // Add event listener for date input to update display date
+           document.getElementById('receipt-date-input').addEventListener('change', (e) => {
+               document.getElementById('receipt-date-display').value = e.target.value;
+           });
+
+
+        async function saveReceipt() {
+            const customerSelect = document.getElementById('receipt-customer');
+            const customerId = customerSelect.value ? parseInt(customerSelect.value) : null;
+            const customerName = customerId ? customerSelect.options[customerSelect.selectedIndex].text : (document.getElementById('receipt-customer-name-display').textContent || 'نقد کسٹمر');
+            const date = document.getElementById('receipt-date-display').value;
+            const total = parseFloat(document.getElementById('receipt-grand-total').textContent) || 0;
+            const paymentType = document.getElementById('receipt-payment-type').value;
+            let amountPaid = 0;
+
+             if (currentReceiptItems.length === 0) {
+                 alert('رسید میں کوئی ائٹم موجود نہیں۔ براہ کرم پہلے ائٹمز شامل کریں۔');
+                 return;
+             }
+              if (!date) {
+                 alert('براہ کرم رسید کی تاریخ منتخب کریں۔');
+                 return;
+             }
+
+            if (paymentType === 'full') {
+                amountPaid = total;
+            } else if (paymentType === 'partial') {
+                amountPaid = parseFloat(document.getElementById('receipt-amount-paid').value) || 0;
+                if (amountPaid < 0 || amountPaid > total) {
+                    alert('ادا شدہ رقم غلط ہے۔ یہ 0 اور ٹوٹل رقم کے درمیان ہونی چاہیے۔');
+                    return;
+                }
+            } else { // 'none'
+                amountPaid = 0;
+            }
+
+            const amountDue = total - amountPaid;
+
+             // If amount is due, a customer MUST be selected
+             if (amountDue > 0 && !customerId) {
+                 alert('ادھار یا جزوی ادائیگی کے لیے کسٹمر منتخب کرنا ضروری ہے۔');
+                 return;
+             }
+
+            const receiptData = {
+                customerId: customerId,
+                customerName: customerName, // Store name for easier display later
+                date: date,
+                items: currentReceiptItems, // Store the items array
+                subtotal: parseFloat(document.getElementById('receipt-subtotal').textContent),
+                total: total,
+                paymentType: paymentType,
+                amountPaid: amountPaid,
+                amountDue: amountDue
+            };
+
+            try {
+                // 1. Save the receipt
+                const receiptId = await addToStore(STORES.receipts, receiptData);
+
+                // 2. If a customer is selected, update their balance and add transaction
+                if (customerId && amountDue > 0) {
+                    const customer = await getFromStore(STORES.customers, customerId);
+                    if (!customer) throw new Error("Customer not found for balance update");
+
+                    const oldBalance = customer.balance || 0;
+                    const newBalance = oldBalance + amountDue;
+                    customer.balance = newBalance;
+
+                     // 2a. Update customer balance in customers store
+                     await putToStore(STORES.customers, customer); // This put uses the customer.id implicitly
+
+                     // 2b. Add transaction record to transactions store
+                     const transactionData = {
+                         customerId: customerId,
+                         date: date,
+                         type: 'receipt', // Indicates this adds to dues
+                         description: `رسید #${receiptId}`, // Link to the receipt
+                         amount: amountDue, // The amount added to the balance
+                         balanceAfter: newBalance,
+                         relatedId: receiptId
+                     };
+                     await addToStore(STORES.transactions, transactionData);
+                 } else if (customerId && amountDue === 0 && amountPaid > 0) {
+                      // If it was a fully paid receipt for a regular customer, still might want a transaction record?
+                      // Or maybe only record transactions that affect the balance? Let's skip for now.
+                      // Could add a zero-amount transaction or a specific type 'receipt-paid' if needed later.
+                 }
+
+
+                alert(`رسید #${receiptId} کامیابی سے محفوظ ہو گئی۔`);
+                // Reset receipt form
+                currentReceiptItems = [];
+                renderReceiptItems();
+                document.getElementById('receipt-customer').value = '';
+                updateReceiptCustomerInfo(); // Reset customer display and balances
+                 document.getElementById('receipt-payment-type').value = 'none'; // Reset payment type
+                 togglePaymentAmount(); // Update UI based on reset type
+                 document.getElementById('receipt-item-select').value = ''; // Clear item selection
+                 document.getElementById('receipt-date-input').valueAsDate = new Date(); // Reset date
+                 document.getElementById('receipt-date-display').valueAsDate = new Date();
+
+                 loadCustomers(); // Refresh customer list in case balance changed
+
+            } catch (error) {
+                 console.error("Error saving receipt:", error);
+                 alert('رسید محفوظ کرنے میں خرابی: ' + error.message);
+            }
+        }
+
+        function printReceipt() {
+            // Update display elements just before printing to ensure they are current
+             document.getElementById('receipt-date-display').value = document.getElementById('receipt-date-input').value;
+             updateReceiptCustomerInfo(); // Ensure name is correct
+             // Any other dynamic fields...
+
+            // Use window.print()
+            window.print();
+        }
+
+
+        // --- Khata System ---
+        async function loadCustomerKhata() {
+             const customerSelect = document.getElementById('khata-customer-select');
+             const customerId = customerSelect.value ? parseInt(customerSelect.value) : null;
+             const detailsDiv = document.getElementById('khata-details');
+             const noCustomerDiv = document.getElementById('khata-no-customer');
+             const paymentSection = document.getElementById('khata-payment-section');
+             const tableBody = document.getElementById('khata-transactions-table').getElementsByTagName('tbody')[0];
+
+             tableBody.innerHTML = ''; // Clear previous transactions
+             paymentSection.style.display = 'none'; // Hide payment section by default
+
+             if (!customerId) {
+                 detailsDiv.style.display = 'none';
+                 noCustomerDiv.style.display = 'block';
+                 return;
+             }
+
+             detailsDiv.style.display = 'block';
+             noCustomerDiv.style.display = 'none';
+
+             try {
+                 const customer = await getFromStore(STORES.customers, customerId);
+                 if (!customer) {
+                      document.getElementById('khata-customer-name').textContent = 'کسٹمر نہیں ملا';
+                      document.getElementById('khata-current-balance').textContent = 'N/A';
+                      return;
+                  }
+
+                  document.getElementById('khata-customer-name').textContent = `کھاتہ برائے: ${customer.name}`;
+                  const currentBalance = customer.balance || 0;
+                  document.getElementById('khata-current-balance').textContent = currentBalance.toFixed(2);
+                   document.getElementById('khata-current-balance').style.color = currentBalance > 0 ? 'red' : 'green';
+
+                 // Show payment section if there's a balance due
+                  if (currentBalance > 0) {
+                      paymentSection.style.display = 'block';
+                      document.getElementById('khata-payment-amount').value = ''; // Clear any previous amount
+                      document.getElementById('khata-payment-amount').max = currentBalance; // Set max payment amount
+                  } else {
+                       paymentSection.style.display = 'none';
+                  }
+
+                 // Load transactions for this customer
+                 const transactions = await getAllFromStore(STORES.transactions, 'customerId', customerId);
+                 // Sort transactions by date (or ID if dates are same)
+                  transactions.sort((a, b) => {
+                      const dateComparison = new Date(a.date) - new Date(b.date);
+                      if (dateComparison !== 0) return dateComparison;
+                      return a.id - b.id; // Sort by ID as fallback for same-day transactions
+                  });
+
+
+                 transactions.forEach(tx => {
+                     const row = tableBody.insertRow();
+                     const isDebit = tx.type === 'receipt'; // 'receipt' means amount was added to balance (debit for customer account)
+                     const isCredit = tx.type === 'payment'; // 'payment' means amount reduced balance (credit)
+
+                     row.innerHTML = `
+                         <td>${new Date(tx.date).toLocaleDateString('ur-PK')}</td>
+                         <td>${tx.description || (tx.type === 'receipt' ? 'ادھار خریداری' : 'ادائیگی وصولی')}</td>
+                         <td>${isDebit ? tx.amount.toFixed(2) : '-'}</td>
+                         <td>${isCredit ? tx.amount.toFixed(2) : '-'}</td>
+                         <td>${tx.balanceAfter.toFixed(2)}</td>
+                     `;
+                 });
+
+             } catch (error) {
+                 console.error("Error loading customer khata:", error);
+                 alert('کسٹمر کا کھاتہ لوڈ کرنے میں خرابی۔');
+                 detailsDiv.style.display = 'none';
+                 noCustomerDiv.style.display = 'block';
+             }
+         }
+
+         async function recordKhataPayment() {
+              const customerSelect = document.getElementById('khata-customer-select');
+              const customerId = customerSelect.value ? parseInt(customerSelect.value) : null;
+              const paymentAmountInput = document.getElementById('khata-payment-amount');
+              const paymentAmount = parseFloat(paymentAmountInput.value);
+
+              if (!customerId) {
+                  alert('براہ کرم پہلے کسٹمر منتخب کریں۔');
+                  return;
+              }
+               if (isNaN(paymentAmount) || paymentAmount <= 0) {
+                  alert('براہ کرم درست مثبت ادائیگی کی رقم درج کریں۔');
+                  return;
+              }
+
+              try {
+                  const customer = await getFromStore(STORES.customers, customerId);
+                  if (!customer) throw new Error("Customer not found for payment");
+
+                  const currentBalance = customer.balance || 0;
+                   if (paymentAmount > currentBalance) {
+                       alert(`ادا کی جانے والی رقم (${paymentAmount.toFixed(2)}) موجودہ بقایا (${currentBalance.toFixed(2)}) سے زیادہ ہے۔`);
+                       paymentAmountInput.value = currentBalance; // Optionally correct input
+                       return;
+                   }
+
+                   const newBalance = currentBalance - paymentAmount;
+                   customer.balance = newBalance;
+
+                  // 1. Update customer balance
+                  await putToStore(STORES.customers, customer);
+
+                  // 2. Add payment transaction record
+                  const transactionData = {
+                      customerId: customerId,
+                      date: new Date().toISOString().split('T')[0], // Use today's date for payment record
+                      type: 'payment', // Indicates this reduces dues
+                      description: 'ادائیگی وصول ہوئی',
+                      amount: paymentAmount, // The amount paid (credited to account)
+                      balanceAfter: newBalance,
+                      relatedId: null // No specific receipt for general payment
+                  };
+                  await addToStore(STORES.transactions, transactionData);
+
+                  alert('ادائیگی کامیابی سے ریکارڈ ہو گئی۔');
+                  loadCustomerKhata(); // Refresh khata display
+                  loadCustomers(); // Refresh customer list to show updated balance
+
+              } catch (error) {
+                  console.error("Error recording payment:", error);
+                  alert('ادائیگی ریکارڈ کرنے میں خرابی: ' + error.message);
+              }
+         }
+
+
+        // --- Reports ---
+        async function generateReport() {
+            const customerId = document.getElementById('report-customer-filter').value ? parseInt(document.getElementById('report-customer-filter').value) : null;
+            const startDate = document.getElementById('report-start-date').value;
+            const endDate = document.getElementById('report-end-date').value;
+            const resultsContainer = document.getElementById('report-details-table-container');
+            resultsContainer.innerHTML = '<p style="text-align: center;">رپورٹ تیار کی جا رہی ہے...</p>'; // Show loading message
+
+            try {
+                let allReceipts = await getAllFromStore(STORES.receipts);
+                let allTransactions = await getAllFromStore(STORES.transactions); // Needed for total received and dues
+
+                 // --- Filtering ---
+                 let filteredReceipts = allReceipts.filter(r => {
+                     let match = true;
+                     if (customerId && r.customerId !== customerId) match = false;
+                     if (startDate && r.date < startDate) match = false;
+                     if (endDate && r.date > endDate) match = false;
+                     return match;
+                 });
+
+                 let filteredTransactions = allTransactions.filter(t => {
+                     let match = true;
+                     if (customerId && t.customerId !== customerId) match = false;
+                     if (startDate && t.date < startDate) match = false;
+                     if (endDate && t.date > endDate) match = false;
+                     return match;
+                 });
+
+                 // --- Calculations ---
+                 let totalSales = filteredReceipts.reduce((sum, r) => sum + r.total, 0);
+                 let totalReceivedViaReceipts = filteredReceipts.reduce((sum, r) => sum + r.amountPaid, 0);
+
+                  // Calculate total received from separate payments within the date range/customer filter
+                  let totalReceivedViaPayments = filteredTransactions
+                      .filter(t => t.type === 'payment')
+                      .reduce((sum, t) => sum + t.amount, 0);
+
+                 let totalReceived = totalReceivedViaReceipts + totalReceivedViaPayments;
+
+                  // Total Dues calculation is tricky. It's better to get the current balance for the selected customer(s).
+                  // If a specific customer is selected:
+                  let totalDues = 0;
+                  if (customerId) {
+                      const customer = await getFromStore(STORES.customers, customerId);
+                      totalDues = customer ? (customer.balance || 0) : 0;
+                  } else {
+                      // If all customers, sum up balances of all customers
+                      const allCustomers = await getAllFromStore(STORES.customers);
+                      totalDues = allCustomers.reduce((sum, c) => sum + (c.balance || 0), 0);
+                      // Note: This shows *current* total dues, not dues specific to the date range.
+                      // Calculating date-range specific dues is much more complex.
+                  }
+
+
+                 // --- Update Summary Display ---
+                 document.getElementById('report-total-sales').textContent = totalSales.toFixed(2);
+                  document.getElementById('report-total-received').textContent = totalReceived.toFixed(2);
+                 document.getElementById('report-total-dues').textContent = totalDues.toFixed(2); // Display current total dues
+
+                 // --- Generate Detailed Report View ---
+                 resultsContainer.innerHTML = ''; // Clear loading message
+
+                 if (customerId) {
+                     // Show Khata for the selected customer within the date range
+                     resultsContainer.innerHTML = `<h4>کھاتہ برائے: ${document.getElementById('report-customer-filter').options[document.getElementById('report-customer-filter').selectedIndex].text} (تاریخ: ${startDate || 'شروع سے'} تا ${endDate || 'آخر تک'})</h4>`;
+                     const table = document.createElement('table');
+                     table.innerHTML = `
+                         <thead>
+                             <tr>
+                                 <th>تاریخ</th>
+                                 <th>تفصیل</th>
+                                 <th>ڈیبٹ</th>
+                                 <th>کریڈٹ</th>
+                                  </tr>
+                         </thead>
+                         <tbody></tbody>`;
+                     const tbody = table.querySelector('tbody');
+                     let filteredCustomerTransactions = filteredTransactions.filter(t => t.customerId === customerId);
+                      // Sort transactions by date
+                      filteredCustomerTransactions.sort((a, b) => new Date(a.date) - new Date(b.date) || a.id - b.id);
+
+                     filteredCustomerTransactions.forEach(tx => {
+                          const row = tbody.insertRow();
+                          const isDebit = tx.type === 'receipt';
+                          const isCredit = tx.type === 'payment';
+                          row.innerHTML = `
+                              <td>${new Date(tx.date).toLocaleDateString('ur-PK')}</td>
+                              <td>${tx.description || (tx.type === 'receipt' ? 'ادھار خریداری' : 'ادائیگی وصولی')}</td>
+                              <td>${isDebit ? tx.amount.toFixed(2) : '-'}</td>
+                              <td>${isCredit ? tx.amount.toFixed(2) : '-'}</td>
+                          `;
+                      });
+                     resultsContainer.appendChild(table);
+
+                 } else {
+                      // Show list of receipts for all customers within the date range
+                     resultsContainer.innerHTML = `<h4>فروخت کی تفصیلات (تاریخ: ${startDate || 'شروع سے'} تا ${endDate || 'آخر تک'})</h4>`;
+                     const table = document.createElement('table');
+                     table.innerHTML = `
+                         <thead>
+                             <tr>
+                                 <th>تاریخ</th>
+                                 <th>کسٹمر</th>
+                                 <th>کل رقم</th>
+                                 <th>ادا شدہ</th>
+                                 <th>بقایا (رسید پر)</th>
+                             </tr>
+                         </thead>
+                         <tbody></tbody>`;
+                     const tbody = table.querySelector('tbody');
+                      // Sort receipts by date
+                      filteredReceipts.sort((a, b) => new Date(a.date) - new Date(b.date) || a.id - b.id);
+
+                      filteredReceipts.forEach(r => {
+                         const row = tbody.insertRow();
+                         row.innerHTML = `
+                             <td>${new Date(r.date).toLocaleDateString('ur-PK')}</td>
+                             <td>${r.customerName || 'نقد کسٹمر'}</td>
+                             <td>${r.total.toFixed(2)}</td>
+                             <td>${r.amountPaid.toFixed(2)}</td>
+                             <td>${r.amountDue.toFixed(2)}</td>
+                         `;
+                     });
+                      if (filteredReceipts.length === 0) {
+                          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">اس مدت میں کوئی رسید نہیں ملی۔</td></tr>';
+                      }
+                     resultsContainer.appendChild(table);
+                 }
+
+             } catch (error) {
+                 console.error("Error generating report:", error);
+                 alert('رپورٹ بنانے میں خرابی۔');
+                 resultsContainer.innerHTML = '<p style="text-align: center; color: red;">رپورٹ بنانے میں خرابی ہوئی۔</p>';
+             }
+        }
+
+
+        // --- Data Management (Export/Import) ---
+        async function exportData() {
+            if (!confirm('کیا آپ تمام ڈیٹا کو JSON فائل کے طور پر ایکسپورٹ کرنا چاہتے ہیں؟')) return;
+
+             try {
+                 const shopInfoData = await getFromStore(STORES.shopInfo, SHOP_INFO_KEY) || {};
+                 const inventoryData = await getAllFromStore(STORES.inventory);
+                 const customersData = await getAllFromStore(STORES.customers);
+                 const receiptsData = await getAllFromStore(STORES.receipts);
+                 const transactionsData = await getAllFromStore(STORES.transactions);
+
+                 const exportObject = {
+                     shopInfo: shopInfoData,
+                     inventory: inventoryData,
+                     customers: customersData,
+                     receipts: receiptsData,
+                     transactions: transactionsData
+                 };
+
+                 const jsonString = JSON.stringify(exportObject, null, 2); // Pretty print JSON
+                 const blob = new Blob([jsonString], { type: 'application/json' });
+                 const url = URL.createObjectURL(blob);
+
+                 const a = document.createElement('a');
+                 a.href = url;
+                 const date = new Date().toISOString().split('T')[0];
+                 a.download = `khata_app_backup_${date}.json`;
+                 document.body.appendChild(a);
+                 a.click();
+                 document.body.removeChild(a);
+                 URL.revokeObjectURL(url);
+
+                 alert('ڈیٹا کامیابی سے ایکسپورٹ ہو گیا۔');
+
+             } catch (error) {
+                 console.error("Error exporting data:", error);
+                 alert('ڈیٹا ایکسپورٹ کرنے میں خرابی۔');
+             }
+        }
+
+        async function importData() {
+             const fileInput = document.getElementById('import-file');
+             const file = fileInput.files[0];
+
+             if (!file) {
+                 alert('براہ کرم امپورٹ کرنے کے لیے ایک JSON فائل منتخب کریں۔');
+                 return;
+             }
+
+             if (!confirm('احتیاط! امپورٹ کرنے سے آپ کا موجودہ تمام ڈیٹا مٹ جائے گا۔ کیا آپ واقعی آگے بڑھنا چاہتے ہیں؟')) {
+                 fileInput.value = ''; // Clear file input
+                 return;
+             }
+
+             const reader = new FileReader();
+             reader.onload = async (event) => {
+                 try {
+                     const importObject = JSON.parse(event.target.result);
+
+                     // --- Clear existing data ---
+                     const tx = db.transaction(Object.values(STORES), 'readwrite');
+                     await Promise.all([
+                         tx.objectStore(STORES.shopInfo).clear(),
+                         tx.objectStore(STORES.inventory).clear(),
+                         tx.objectStore(STORES.customers).clear(),
+                         tx.objectStore(STORES.receipts).clear(),
+                         tx.objectStore(STORES.transactions).clear()
+                     ]);
+                     await tx.done; // Ensure clearing is complete before adding
+
+                     console.log("Old data cleared.");
+
+                      // --- Import new data ---
+                      // Use another transaction for adding data
+                      const addTx = db.transaction(Object.values(STORES), 'readwrite');
+
+                      // Import Shop Info (handle empty object)
+                      if (importObject.shopInfo && Object.keys(importObject.shopInfo).length > 0) {
+                         await addTx.objectStore(STORES.shopInfo).put(importObject.shopInfo, SHOP_INFO_KEY);
+                      }
+
+                      // Import Inventory
+                      if (importObject.inventory && Array.isArray(importObject.inventory)) {
+                         for (const item of importObject.inventory) {
+                              // Remove ID if present to allow autoIncrement (or handle potential ID conflicts)
+                              // Let's assume imported data might have IDs we want to preserve if possible,
+                              // but IndexedDB autoIncrement might clash. A safer bet for simple import
+                              // is to let IDs be regenerated unless specific ID preservation is needed.
+                              // For now, let's try putting with existing ID. If it fails, need more robust logic.
+                              // delete item.id; // To ensure auto-increment works cleanly on new DB
+                              await addTx.objectStore(STORES.inventory).put(item);
+                         }
+                      }
+                      // Import Customers
+                       if (importObject.customers && Array.isArray(importObject.customers)) {
+                           for (const customer of importObject.customers) {
+                               // delete customer.id;
+                               await addTx.objectStore(STORES.customers).put(customer);
+                           }
+                       }
+                       // Import Receipts
+                       if (importObject.receipts && Array.isArray(importObject.receipts)) {
+                           for (const receipt of importObject.receipts) {
+                               // delete receipt.id;
+                               await addTx.objectStore(STORES.receipts).put(receipt);
+                           }
+                       }
+                       // Import Transactions
+                       if (importObject.transactions && Array.isArray(importObject.transactions)) {
+                           for (const transaction of importObject.transactions) {
+                               // delete transaction.id;
+                               await addTx.objectStore(STORES.transactions).put(transaction);
+                           }
+                       }
+
+                      await addTx.done; // Wait for all additions to complete
+
+                     alert('ڈیٹا کامیابی سے امپورٹ ہو گیا۔ براہ کرم صفحہ ریفریش کریں یا ایپلیکیشن دوبارہ شروع کریں۔');
+                     fileInput.value = ''; // Clear file input
+                      // Reload data into UI
+                      loadInitialData();
+
+                 } catch (error) {
+                     console.error("Error importing data:", error);
+                     alert('ڈیٹا امپورٹ کرنے میں خرابی۔ یقینی بنائیں کہ فائل درست JSON فارمیٹ میں ہے۔\n' + error.message);
+                      // Attempt to restore old data might be complex, usually import failure means manual recovery or re-importing a good backup.
+                 }
+             };
+
+             reader.onerror = (event) => {
+                 console.error("File reading error:", event.target.error);
+                 alert('فائل پڑھنے میں خرابی۔');
+                 fileInput.value = '';
+             };
+
+             reader.readAsText(file);
+        }
+
+    </script>
+
+</body>
+</html>
